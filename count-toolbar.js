@@ -34,7 +34,7 @@ class CountToolbar extends LitElement{
   render(){
     return html`
       Hey there user! You have a count of ${this.count} 
-      <button @click= alt="Reset Count">reset</button>
+      <button @click=${() => store.count = 0} alt="Reset Count">reset</button>
     `;
   }
 
