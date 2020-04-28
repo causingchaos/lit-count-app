@@ -28,12 +28,16 @@ class CountApp extends LitElement {
 
   render() {
     return html`
+      <button @click=${() => store.decrementCount() } alt="Decrement Count">-</button>
       ${this.count}
       <button @click=${this.incrementCount} alt="Increment Count">+</button>
     `
   }
   incrementCount() {
     store.count = ++this.count;
+  }
+  decrementCount() {
+    if (store.count > 0 ) store.count = --this.count;
   }
 
   /*
