@@ -1,15 +1,29 @@
 import { html, LitElement } from 'http://unpkg.com/lit-element?module';
+import { store } from './store.js'
+
+import { autorun } from "https://unpkg.com/mobx?module";
 
 class CountApp extends LitElement {
 
   static get properties( ){
     return {
-      count: {type: Number }
+      count: { type: Number }
     }
   }
   constructor(){
     super()
     this.count = 10;
+  }
+
+  connectedCallback(){
+    super.connectedCallback();
+    this.diposer = autorun(() => {
+      this.count = store.count;
+    })
+  }
+
+  disconnectedCallback(){
+    this.disposer();
   }
 
   render() {
@@ -18,7 +32,11 @@ class CountApp extends LitElement {
       <button @click=${this.incrementCount} alt="Increment Count">+</button>
     `
   }
+  incrementCount() {
+    store.count = ++this.count;
+  }
 
+  /*
   incrementCount(){
     this.count = ++this.count;
     this.dispatchEvent(new CustomEvent('count-changed', {
@@ -30,6 +48,7 @@ class CountApp extends LitElement {
       }
     }));
   }
+  */
 }
 
 customElements.define('count-app', CountApp);

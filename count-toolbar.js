@@ -1,4 +1,6 @@
 import { html, LitElement } from 'http://unpkg.com/lit-element?module';
+import { store } from './store.js'
+import { autorun } from "https://unpkg.com/mobx?module";
 
 class CountToolbar extends LitElement{
 
@@ -11,19 +13,41 @@ class CountToolbar extends LitElement{
   constructor(){
     super()
     this.count = 10;
-
-    window.addEventListener('count-changed', this.countChanged.bind(this))
+    
+    autorun(() => {  //doesn't need listners, does it behind the scenes
+      this.count = store.count;
+    })
+    //listen for bubbling events from lower order functions
+    //window.addEventListener('count-changed', this.countChanged.bind(this))
+  }
+  connectedCallback() {
+    super.connectedCallback()
+    autorun(() => {
+      this.count = store.count;
+    })
   }
 
-  countChanged(e) {
-    console.log(e);
+  disconnectedCallback(){
+    this.disposer();
   }
 
   render(){
     return html`
-      Hey there user! You have a count of ${this.count}
+      Hey there user! You have a count of ${this.count} 
+      <button @click= alt="Reset Count">reset</button>
     `;
   }
+
+  //disconnectedCallback() {
+    //window.removeEventListener('count-changed', this.countChanged.bind(this))
+  //}
+
+  //countChanged(e) {
+  //  console.log(e);
+    //this.count = e.detail.count;
+  //}
+
+  
 }
 
 customElements.define('count-toolbar', CountToolbar);
