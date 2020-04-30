@@ -2,6 +2,7 @@ import { html, LitElement } from 'http://unpkg.com/lit-element?module';
 import { store } from './store.js'
 import { autorun } from "https://unpkg.com/mobx?module";
 
+
 class CountToolbar extends LitElement{
 
   static get properties(){
@@ -17,7 +18,7 @@ class CountToolbar extends LitElement{
     autorun(() => {  //doesn't need listners, does it behind the scenes
       this.count = store.count;
     })
-    //listen for bubbling events from lower order functions
+    //listen for bubbling events from lower order functions -- moved to mobex
     //window.addEventListener('count-changed', this.countChanged.bind(this))
   }
   connectedCallback() {
